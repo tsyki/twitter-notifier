@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,10 +41,12 @@ public class TwitterNotifier {
 	private static final String KEY_KEYWORD = "keyword";
 
 	private String confFileName;
-	
+
 	private String sinceIdFileName;
 
 	private List<String> keywords = new ArrayList<>();
+
+	private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	/** 検索開始ID*/
 	private Long sinceId;
@@ -98,9 +102,11 @@ public class TwitterNotifier {
 				return -o1.getCreatedAt().compareTo(o2.getCreatedAt());
 			}
 		});
+		int n = 1;
 	    for (Status status : sorted) {
 	    	// ツイートへのリンク+作成日時+テキスト
-	    	String msg = getTweetUrl(status.getUser().getScreenName(), status.getId()) + " " + status.getCreatedAt() + " " + status.getText().replace("\n", " ");
+	    	// NOTE 先頭をツイートへのURLにすると、公式アプリで見た時に最初の行のツイートだけ展開されて表示されてしまうので行頭に番号を入れてそれを避ける
+	    	String msg = (n++) + ". " + getTweetUrl(status.getUser().getScreenName(), status.getId()) + " " + dateFormat.format(status.getCreatedAt()) + " " + status.getText().replace("\n", " ");
 	    	logger.info("hit:" + msg);
 	    	msgs.add(msg);
 	    }
