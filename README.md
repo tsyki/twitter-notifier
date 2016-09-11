@@ -14,7 +14,7 @@
   ※accessToken、accessTokenSecretは冒頭にタブが入るのが正しいので注意
 5. cronで定期的に呼ばれるようにする  
   10分ごとに実行する例  
-    */10 * * * * java -jar /home/hogehoge/twitter_notifier.jar
+    */10 * * * * cd /home/hogehoge/;java -jar twitter_notifier.jar
 
 これでsearch.propertiesに指定したアカウントに対し、検索結果がDMで飛んでくる。  
 DMの内容は「Tweetのアドレス Tweet日時 Tweet内容」となっている
